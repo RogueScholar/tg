@@ -16,7 +16,7 @@ override_dh_auto_configure:
 	./configure --disable-openssl --prefix=/usr
 
 override_dh_usrlocal:
-	
+
 
 %:
 			cp tg-server.pub server.pub
