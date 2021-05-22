@@ -1,7 +1,7 @@
 # Telegram messenger CLI
 
-Command-line interface for [Telegram](http://telegram.org), using libreadline
-interface. It is a client implementation of TGL library.
+Command-line interface for [Telegram](https://telegram.org), using libreadline
+to create a TUI interface. It is a client implementation of the TGL library.
 
 > Note: This is a fork of [`telegram-cli`](https://github.com/vysheng/tg).
 
@@ -13,9 +13,9 @@ Documentation for the Telegram API is available
 Documentation for the MTproto protocol is available
 [here](https://core.telegram.org/mtproto).
 
-## Upgrading to version 1.0
+## Upgrading to version >1.0
 
-First of all, the binary is now in the `./bin` folder and is named telegram-cli. So
+First of all, the binary is now in the `./bin` folder and is named `telegram-cli`. So
 be careful not to use the old binary.
 
 Second, the configuration folder is now `${HOME}/.telegram-cli`.
@@ -23,12 +23,12 @@ Second, the configuration folder is now `${HOME}/.telegram-cli`.
 Third, the database is not compatible with older versions, so you'll have to login
 again.
 
-Fourth, in `peer_name` octothorpes or '#' are substituted with '@'. (Not applied to
+Fourth, in `peer_name`, octothorpes '#' are substituted with '@'. (Doesn't apply to
 appending '#%d' to workaround two peers having the same name.)
 
 ## Installation
 
-Clone this GitHub repository with the `--recursive` parameter to clone submodules:
+Clone this GitHub repository with the `--recursive` switch to clone the submodules too:
 
 ```shell
 git clone --recursive https://github.com/RogueScholar/tg.git && cd tg
@@ -41,23 +41,31 @@ may work, but are not tested.
 
 ### Linux and BSDs
 
-Install library dependencies: libreadline, openssl and (if you want to use
-configuration files) libconfig, liblua, python and libjansson. If you do not want
-to use them pass one of more of these options to the configure script:
-`--disable-libconfig`, `--disable-liblua`, `--disable-python` and `--disable-json`.
+Install the library dependencies:
+
+- `libreadline`
+- `openssl`
+- `libconfig` (if you want to use configuration files)
+- `liblua`
+- `libpython`
+- `libjansson`
+
+If you do not want to use one of more of them, pass one or more of these options to
+the configure script: `--disable-libconfig`, `--disable-liblua`, `--disable-python`
+or `--disable-json`.
 
 On Ubuntu/Debian this can be accomplished using:
 
 ```shell
-sudo apt install libreadline-dev libconfig-dev libssl-dev lua5.3 liblua5.3-dev \
-libevent-dev libjansson-dev libpython3-dev libgcrypt-dev zlib1g-dev lua-lgi make
+sudo apt install devscripts libconfig-dev libevent-dev libgcrypt-dev libjansson-dev \
+liblua5.3-dev libpython3-dev libreadline-dev libssl-dev lua5.3 lua-lgi make zlib1g-dev
 ```
 
 To build and install the packaege, run:
 
 ```shell
-dpkg-buildpackage -b
-sudo dpkg -i ../telegram-cli_x.x.x-x_amd64.deb
+debuild -F -sa
+sudo dpkg -i ../telegram-cli_*_amd64.deb
 ```
 
 On Gentoo:
@@ -131,7 +139,7 @@ The client depends on
 [libconfig](http://www.hyperrealm.com/libconfig/), which are not included in OS
 X by default. You have to install these libraries manually.
 
-If using [Homebrew](http://brew.sh/):
+If using [Homebrew](https://brew.sh/):
 
 ```shell
 brew tap ivoputzer/tg
@@ -147,26 +155,25 @@ export OPENSSLPATH=$(brew --prefix openssl)
 export CPPFLAGS="-I/usr/local/opt/openssl/include -I$READLINEPATH/include -W"
 export CFLAGS="-I/usr/local/include -I$READLINEPATH/include -I$OPENSSLPATH/include"
 export LDFLAGS="-L/usr/local/lib -L$READLINEPATH/lib -L$OPENSSLPATH/lib"
-
-./configure
+./configure && make -j$(nproc)
 ```
 
-You might have to manually pass the location of OpenSSL to the configure script
-like so:
+You might have to manually pass the location of OpenSSL to the configure script,
+which can be learned from Homebrew like so:
 
 ```shell
 $ brew info openssl
   openssl: stable 1.0.2e (bottled) [keg-only]
   Poured from bottle /usr/local/Cellar/openssl/1.0.2e_1 (465 files, 11.9M)
-  ```
+```
 
-So in this case, the configure script should be run as:
+In this case, the configure script should be run as:
 
 ```shell
 ./configure --with-openssl=/usr/local/Cellar/openssl/1.0.2e_1
 ```
 
-in other cases, OpenSSL could be found in `/usr/local/opt`, and you'd use:
+and in other cases, OpenSSL could be found in `/usr/local/opt`, so you'd use:
 
 ```shell
 ./configure --with-openssl=/usr/local/opt/openssl
@@ -182,12 +189,12 @@ using:
 After the configure script exit successfully, build with:
 
 ```shell
-gmake -j$(nproc)
+make -j$(nproc)
 ```
 
-Thanks to
-[@jfontan](https://github.com/vysheng/tg/issues/3#issuecomment-28293731) for
-this solution.
+> Thanks to
+> [@jfontan](https://github.com/vysheng/tg/issues/3#issuecomment-28293731) for
+> this solution.
 
 If using [MacPorts](https://www.macports.org):
 
@@ -199,7 +206,7 @@ sudo port install python34
 sudo port install libevent
 export CFLAGS="-I/usr/local/include -I/opt/local/include -I/opt/local/include/lua-5.1"
 export LDFLAGS="-L/usr/local/lib -L/opt/local/lib -L/opt/local/lib/lua-5.1"
-./configure && gmake -j$(nproc)
+./configure && make -j$(nproc)
 ```
 
 ### Docker
@@ -231,7 +238,7 @@ or in `/etc/telegram-cli/server.pub`. If not, specify where to find it with `-k`
 ./bin/telegram-cli -k tg-server.pub
 ```
 
-The client supports <kbd>Tab</kbd> completion and command history.
+The client supports <kbd>Tab</kbd>-completion and command history.
 
 A "Peer" refers to the name of the contact or dialog and can be accessed by TAB
 completion as well. For user contacts, the peer name is `FirstName_LastName` with all
