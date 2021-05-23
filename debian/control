@@ -3,9 +3,10 @@ Section: net
 Priority: optional
 Maintainer: Peter J. Mello <admin@petermello.net>
 Build-Depends: debhelper-compat (= 12), autoconf-archive, autotools-dev,
- lsb-release, libconfig-dev, libreadline-dev, libssl-dev | libssl1.0-dev,
- libevent-dev, libjansson-dev, libpython3-all-dev, liblua5.3-dev,
- libgcrypt20-dev | libgcrypt-dev, lua-lgi, lua5.3
+ lsb-release, xxd, libconfig-dev, libevent-dev, libjansson-dev, libreadline-dev,
+ libssl-dev | libssl1.0-dev, libpython3-all-dev,
+ liblua5.3-dev | liblua5.2-dev | liblua5.1-dev, libgcrypt20-dev | libgcrypt-dev,
+ lua-lgi, lua5.3 | lua5.2 | lua5.1
 Standards-Version: 4.5.1
 Homepage: https://github.com/RogueScholar/telegram-cli
 Vcs-Git: https://github.com/RogueScholar/telegram-cli.git

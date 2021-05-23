@@ -1,56 +1,86 @@
-TGL_OBJECTS=${OBJ}/mtproto-common.o ${OBJ}/mtproto-client.o ${OBJ}/mtproto-key.o ${OBJ}/queries.o ${OBJ}/structures.o ${OBJ}/binlog.o ${OBJ}/tgl.o ${OBJ}/updates.o ${OBJ}/tgl-net.o ${OBJ}/tgl-timers.o ${OBJ}/tg-mime-types.o ${OBJ}/mtproto-utils.o  ${OBJ}/crypto/bn_openssl.o ${OBJ}/crypto/bn_altern.o ${OBJ}/crypto/rsa_pem_openssl.o ${OBJ}/crypto/rsa_pem_altern.o ${OBJ}/crypto/md5_openssl.o ${OBJ}/crypto/md5_altern.o ${OBJ}/crypto/sha_openssl.o ${OBJ}/crypto/sha_altern.o ${OBJ}/crypto/aes_openssl.o ${OBJ}/crypto/aes_altern.o 
+srcdir  = .
 
-TGL_OBJECTS_AUTO=${OBJ}/auto/auto-skip.o ${OBJ}/auto/auto-fetch.o ${OBJ}/auto/auto-store.o ${OBJ}/auto/auto-autocomplete.o ${OBJ}/auto/auto-types.o ${OBJ}/auto/auto-fetch-ds.o  ${OBJ}/auto/auto-free-ds.o ${OBJ}/auto/auto-store-ds.o ${OBJ}/auto/auto-print-ds.o
+CFLAGS ?= -g -O2 -pipe -m64 -march=sandybridge -mmmx -mfxsr -mpopcnt -mcx16 -msahf -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mno-sse4a -mavx -mno-avx2 -maes -mno-vaes -mpclmul -mno-vpclmulqdq -mxsave -mxsaveopt -mno-xsavec -mno-xsaves -mno-3dnow --param=l1-cache-size=32 --param=l1-cache-line-size=64 --param=l2-cache-size=4096 --param=ssp-buffer-size=4 -mtune=sandybridge -mfpmath=sse -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_REENTRANT -Wl,-z -Wl,now -Wl,-z -Wl,relro -Wl,-sort-common -Wl,--enable-new-dtags -fcf-protection -fstack-clash-protection -ftree-vectorize -flto -ffat-lto-objects
 
+COMPILE_FLAGS = ${CFLAGS} -I/usr/include -DHAVE_CONFIG_H -Wall -Wextra -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -D_FORTIFY_SOURCE=2
+LINK_FLAGS    = ${CFLAGS} -L/usr/lib -rdynamic -ggdb -levent -lz -lssl -lcrypto
 
-TLD_OBJECTS=${OBJ}/dump-tl-file.o
-GENERATE_OBJECTS=${OBJ}/generate.o
-TGL_COMMON_OBJECTS=${OBJ}/tools.o ${OBJ}/crypto/rand_openssl.o ${OBJ}/crypto/rand_altern.o ${OBJ}/crypto/err_openssl.o ${OBJ}/crypto/err_altern.o
-TGL_OBJ_C=${GENERATE_OBJECTS} ${TGL_COMMON_OBJECTS} ${TGL_OBJECTS} ${TLD_OBJECTS}
+TGL_DIR_LIST  = auto bin dep dep/auto dep/crypto libs objs objs/auto objs/crypto
+TGL_LIB_LIST  = libs/libtgl.a libs/libtgl.so
 
-AR?=ar
+TGL_OBJECTS = objs/mtproto-common.o objs/mtproto-client.o objs/mtproto-key.o objs/queries.o objs/structures.o objs/binlog.o objs/tgl.o objs/updates.o objs/tg-mime-types.o objs/mtproto-utils.o objs/crypto/bn_openssl.o objs/crypto/bn_altern.o objs/crypto/rsa_pem_openssl.o objs/crypto/rsa_pem_altern.o objs/crypto/md5_openssl.o objs/crypto/md5_altern.o objs/crypto/sha_openssl.o objs/crypto/sha_altern.o objs/crypto/aes_openssl.o objs/crypto/aes_altern.o objs/tgl-net.o objs/tgl-timers.o
+
+TGL_COMMON_OBJECTS = objs/tools.o objs/crypto/rand_openssl.o objs/crypto/rand_altern.o objs/crypto/err_openssl.o objs/crypto/err_altern.o
+
+TGL_OBJECTS_AUTO = objs/auto/auto-skip.o objs/auto/auto-fetch.o objs/auto/auto-store.o objs/auto/auto-autocomplete.o objs/auto/auto-types.o objs/auto/auto-fetch-ds.o objs/auto/auto-free-ds.o objs/auto/auto-store-ds.o objs/auto/auto-print-ds.o
+
+TGL_OBJ_C ::= objs/generate.o $(TGL_COMMON_OBJECTS) $(TGL_OBJECTS) objs/dump-tl-file.o
+
+TGL_DEPENDENCE ::= $(subst objs/,dep/,$(patsubst %.o,%.d,$(TGL_OBJ_C)))
+TGL_DEPENDENCE_LIST ::= $(TGL_DEPENDENCE)
+
+INCLUDE += -I$(srcdir)
+
+AR ?= ar
+CC ?= gcc
 
 .SUFFIXES:
 
 .SUFFIXES: .c .h .o
 
-dump-tl: ${EXE}/dump-tl-file
+default: $(TGL_LIB_LIST)
 
-${TGL_OBJECTS}: ${AUTO}/constants.h ${AUTO}/auto-skip.h ${AUTO}/auto-fetch.h ${AUTO}/auto-store.h ${AUTO}/auto-autocomplete.h ${AUTO}/auto-types.h ${AUTO}/auto-fetch-ds.h ${AUTO}/auto-free-ds.h ${AUTO}/auto-store-ds.h ${AUTO}/auto-print-ds.h
+create_dirs: $(TGL_DIR_LIST)
+create_dirs_and_headers: $(TGL_DIR_LIST) auto/auto-skip.h auto/auto-fetch.h auto/auto-store.h auto/auto-autocomplete.h auto/auto-types.h
 
-${TGL_OBJ_C}: ${OBJ}/%.o: ${srcdir}/tgl/%.c | create_dirs
-	${CC} ${INCLUDE} ${COMPILE_FLAGS} -iquote ${srcdir}/tgl -c -MP -MD -MF ${DEP}/$*.d -MQ ${OBJ}/$*.o -o $@ $<
+dump-tl: bin/dump-tl-file
 
-${TGL_OBJECTS_AUTO}: ${OBJ}/auto/%.o: ${AUTO}/%.c | create_dirs
-	${CC} ${INCLUDE} ${COMPILE_FLAGS} -iquote ${srcdir}/tgl -c -MP -MD -MF ${DEP}/$*.d -MQ ${OBJ}/$*.o -o $@ $<
+$(TGL_OBJECTS): auto/constants.h auto/auto-skip.h auto/auto-fetch.h auto/auto-store.h auto/auto-autocomplete.h auto/auto-types.h auto/auto-fetch-ds.h auto/auto-free-ds.h auto/auto-store-ds.h auto/auto-print-ds.h
 
-#${OBJ}/auto/auto.o: ${AUTO}/auto.c
-#	${CC} ${INCLUDE} ${COMPILE_FLAGS} -iquote ${srcdir}/tgl -c -MP -MD -MF ${DEP}/auto/auto.d -MQ ${OBJ}/auto/auto.o -o $@ $<
+$(TGL_OBJ_C): objs/%.o: ${srcdir}/tgl/%.c | create_dirs
+	$(CC) $(INCLUDE) $(COMPILE_FLAGS) -iquote $(srcdir)/tgl -c -MP -MD -MF dep/$*.d -MQ objs/$*.o -o $@ $<
 
-${LIB}/libtgl.a: ${TGL_OBJECTS} ${TGL_COMMON_OBJECTS} ${TGL_OBJECTS_AUTO}
-	rm -f $@ && ${AR} ruv $@ $^
+$(TGL_OBJECTS_AUTO): objs/auto/%.o: auto/%.c | create_dirs
+	$(CC) $(INCLUDE) $(COMPILE_FLAGS) -iquote $(srcdir)/tgl -c -MP -MD -MF dep/$*.d -MQ objs/$*.o -o $@ $<
 
-${EXE}/generate: ${GENERATE_OBJECTS} ${TGL_COMMON_OBJECTS}
-	${CC} ${GENERATE_OBJECTS} ${TGL_COMMON_OBJECTS} ${LINK_FLAGS} -o $@
+libs/libtgl.a: $(TGL_OBJECTS) $(TGL_COMMON_OBJECTS) $(TGL_OBJECTS_AUTO)
+	rm -f $@ && $(AR) ruv $@ $^
 
-${AUTO}/scheme.tlo: ${AUTO}/scheme.tl ${EXE}/tl-parser
-	${EXE}/tl-parser -e $@ ${AUTO}/scheme.tl
+libs/libtgl.so: $(TGL_OBJECTS) $(TGL_COMMON_OBJECTS) $(TGL_OBJECTS_AUTO)
+	$(CC) -shared -o $@ $^ $(LINK_FLAGS)
 
-${AUTO}/scheme.tl: ${srcdir}/tgl/scheme.tl ${srcdir}/tgl/encrypted_scheme.tl ${srcdir}/tgl/binlog.tl ${srcdir}/tgl/append.tl ${srcdir}/tgl/mtproto.tl | ${AUTO}
+bin/generate: objs/generate.o $(TGL_COMMON_OBJECTS)
+	$(CC) objs/generate.o $(TGL_COMMON_OBJECTS) $(LINK_FLAGS) -o $@
+
+auto/scheme.tlo: auto/scheme.tl bin/tl-parser
+	bin/tl-parser -e $@ auto/scheme.tl
+
+auto/scheme.tl: $(srcdir)/tgl/scheme.tl $(srcdir)/tgl/encrypted_scheme.tl $(srcdir)/tgl/binlog.tl $(srcdir)/tgl/append.tl $(srcdir)/tgl/mtproto.tl | auto
 	cat $^ > $@
 
-${AUTO}/scheme2.tl: ${AUTO}/scheme.tl ${EXE}/tl-parser
-	${EXE}/tl-parser -E ${AUTO}/scheme.tl 2> $@  || ( cat $@ && rm $@ && false )
+auto/scheme2.tl: auto/scheme.tl bin/tl-parser
+	bin/tl-parser -E auto/scheme.tl 2> $@ || ( cat $@ && rm $@ && false )
 
-${AUTO}/auto-%.c: ${AUTO}/scheme.tlo ${EXE}/generate auto/constants.h ${AUTO}/auto-%.h | create_dirs_and_headers
-	${EXE}/generate -g $(patsubst ${AUTO}/auto-%.c,%,$@) ${AUTO}/scheme.tlo > $@ || ( rm $@ && false )
+auto/auto.c: auto/scheme.tlo bin/generate
+	bin/generate auto/scheme.tlo > $@
 
-${AUTO}/auto-%.h: ${AUTO}/scheme.tlo ${EXE}/generate
-	${EXE}/generate -g $(patsubst ${AUTO}/auto-%.h,%-header,$@) ${AUTO}/scheme.tlo > $@  || ( rm $@ && false )
+auto/auto-%.c: auto/scheme.tlo bin/generate auto/constants.h auto/auto-%.h | create_dirs_and_headers
+	bin/generate -g $(patsubst auto/auto-%.c,%,$@) auto/scheme.tlo > $@ || ( rm $@ && false )
 
-${AUTO}/constants.h: ${AUTO}/scheme2.tl ${srcdir}/tgl/gen_constants_h.awk
-	awk -f ${srcdir}/tgl/gen_constants_h.awk < $< > $@
+auto/auto-%.h: auto/scheme.tlo bin/generate
+	bin/generate -g $(patsubst auto/auto-%.h,%-header,$@) auto/scheme.tlo > $@ || ( rm $@ && false )
 
-${EXE}/dump-tl-file: ${OBJ}/auto/auto.o ${TLD_OBJECTS}
-	${CC} ${OBJ}/auto/auto.o ${TLD_OBJECTS} ${LINK_FLAGS} -o $@
+auto/constants.h: auto/scheme2.tl $(srcdir)/tgl/gen_constants_h.awk
+	awk -f $(srcdir)/tgl/gen_constants_h.awk < $< > $@
 
+bin/dump-tl-file: objs/auto/auto.o objs/dump-tl-file.o
+	$(CC) objs/auto/auto.o objs/dump-tl-file.o $(LINK_FLAGS) -o $@
+
+mime-types.c: mime.types
+	@echo xxd -i mime.types > mime-types.c
+	@if command -v xxd >/dev/null 2>&1 ; then \
+		xxd -i mime.types > mime-types.c ; \
+	else \
+		echo "# No xxd installed!  Trying to skip ..." ; \
+		test -r $@ ; \
+	fi

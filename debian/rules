@@ -42,13 +42,16 @@ export DEB_BUILD_MAINT_OPTIONS DEB_CFLAGS_MAINT_APPEND DH_VERBOSE
 
 
 %:
-	@cp -fv $(CURDIR)/tg-server.pub $(CURDIR)/server.pub
 	dh $@ -v
-	@rm -fv $(CURDIR)/server.pub
 
+
+override_dh_auto_clean:
+	cd $(CURDIR)/tgl && $(MAKE) clean
+	dh_auto_clean -O-v
 
 override_dh_auto_configure:
-	dh_auto_configure -O-v -- --disable-openssl --enable-extf \
+	@cp -fv $(CURDIR)/tg-server.pub $(CURDIR)/server.pub
+	dh_auto_configure -O-v -- --enable-extf --enable-python --enable-libevent \
 		LUA="/usr/bin/lua5.3" LUA_INCLUDE="-I/usr/include/lua5.3" \
 		LUA_LIB="-llua5.3"
 
