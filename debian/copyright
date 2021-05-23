@@ -1,31 +1,45 @@
-Format: http://dep.debian.net/deps/dep5
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: telegram-cli
-Source: https://github.com/vysheng/tg
+Upstream-Contact: Peter J. Mello <admin@petermello.net>
+Source: https://github.com/RogueScholar/telegram-cli/releases
 
 Files: *
-Copyright: 2013-2014 Vitaly Valtman <https://github.com/vysheng>
-License: GPL-3.0+
+Copyright: 2013-2016, Vitaly Valtman <mail@vysheng.ru>
+           2013-2014, Li-Wen Hsu <lwhsu@lwhsu.org>
+                2014, Dmitrij D. Czarkoff <czarkoff@gmail.com>
+                2015, Vincent Castellano <surye80@gmail.com>
+                2015, luckydonald <code@luckydonald.de>
+                2016, Peter Hsu <hsu@peterdavehello.org>
+           2019-2021, Rafal Wieczorek <kenorb@gmail.com>
+License: GPL-3.0-or-later
 
 Files: debian/*
-Copyright: 2014 Steve Illichevsky <still.ru@gmail.com>
-License: GPL-3.0+
+Copyright: 2014, Steve Illichevsky <still.ru@gmail.com>
+           2014, Kartik Mistry <kartik@debian.org>
+           2021, Peter J. Mello <admin@petermello.net>
+License: GPL-3.0-or-later OR MPL-2.0
 
-License: GPL-3.0+
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+License: GPL-3.0-or-later
+ This program is free software: you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the Free Software
+ Foundation, either version 3 of the License, or (at your option) any later
+ version.
  .
- This package is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ PARTICULAR PURPOSE. See the GNU General Public License for more details.
  .
- You should have received a copy of the GNU General Public License
- along with this program. If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU General Public License along with
+ this program. If not, see <https://www.gnu.org/licenses/>.
  .
- On Debian systems, the complete text of the GNU General
- Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+ On Debian(-based) GNU/Linux systems, the complete text of the GNU General
+ Public License, version 3, can be found in the
+ `/usr/share/common-licenses/GPL-3' file.
 
-# Please also look if there are files or directories which have a
-# different copyright/license attached and list them here.
+License: MPL-2.0
+ This Source Code Form is subject to the terms of the Mozilla Public License,
+ v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain
+ one at <https://mozilla.org/MPL/2.0/>.
+ .
+ On Debian(-based) GNU/Linux systems, the complete text of the Mozilla Public
+ License, v. 2.0, can be found in the `/usr/share/common-licenses/MPL-2.0' file.

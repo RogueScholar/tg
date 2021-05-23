@@ -1,8 +1,8 @@
 /var/lib/telegram-cli/*.log {
-        daily
-        missingok
-        rotate 31
-        compress
-        notifempty
-	nocreate
+    rotate 31
+    daily
+    missingok
+    notifempty
+    nocreate
+    compress
 }

@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+adduser --system --home /var/lib/telegram-cli --gecos "Telegram CLI Daemon" \
+  --group telegramd
+
+##DEBHELPER##
+
+exit 0

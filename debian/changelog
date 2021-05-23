@@ -1,20 +1,24 @@
-telegram-cli (1.0.6-1) unstable; urgency=low
+telegram-cli (1.4.0-1) hirsute; urgency=medium
 
-telegram-cli (0.1-2) unstable; urgency=low
+  * New upstream release: 1.4.0
+
+ -- Peter J. Mello <admin@petermello.net>  Sat, 22 May 2021 09:05:20 -0700
+
+telegram-cli (1.3.1-1) unstable; urgency=low
 
   * Updated Standards-Version to 3.9.5
   * Sorted Build/Depends fields.
 
  -- Kartik Mistry <kartik@debian.org>  Fri, 21 Feb 2014 17:02:38 +0530
 
-telegram-cli (0.1-1) unstable; urgency=low
+telegram-cli (1.0.5.1-1) unstable; urgency=low
 
   * Upstream update version
   * Inpliment -e option
 
  -- Steve Illichevsky <still.ru@gmail.com>  Sat, 11 Oct 2014 08:47:07 +0400
 
-telegram-cli (1.0.5.1-1) unstable; urgency=low
+telegram-cli (1.0.5-1) unstable; urgency=low
 
   * Initial release
 

@@ -7,28 +7,26 @@ to create a TUI interface. It is a client implementation of the TGL library.
 
 ## API/Protocol documentation
 
-Documentation for the Telegram API is available
-[here](https://core.telegram.org/api).
+[Telegram API Documentation](https://core.telegram.org/api) and
+[MTproto Protocol Documentation](https://core.telegram.org/mtproto)
 
-Documentation for the MTproto protocol is available
-[here](https://core.telegram.org/mtproto).
+## Upgrading to version > 1.0
 
-## Upgrading to version >1.0
-
-First of all, the binary is now in the `./bin` folder and is named `telegram-cli`. So
-be careful not to use the old binary.
+First of all, the binary is now in the `./bin` folder and is named
+`telegram-cli`. So be careful not to use the old binary.
 
 Second, the configuration folder is now `${HOME}/.telegram-cli`.
 
-Third, the database is not compatible with older versions, so you'll have to login
-again.
+Third, the database is not compatible with older versions, so you'll have to
+login again.
 
-Fourth, in `peer_name`, octothorpes '#' are substituted with '@'. (Doesn't apply to
-appending '#%d' to workaround two peers having the same name.)
+Fourth, in `peer_name`, octothorpes '#' are substituted with '@'. (Doesn't apply
+to appending '#%d' to workaround two peers having the same name.)
 
 ## Installation
 
-Clone this GitHub repository with the `--recursive` switch to clone the submodules too:
+Clone this GitHub repository with the `--recursive` switch to clone the
+submodules too:
 
 ```shell
 git clone --recursive https://github.com/RogueScholar/tg.git && cd tg
@@ -36,57 +34,58 @@ git clone --recursive https://github.com/RogueScholar/tg.git && cd tg
 
 ### Python Support
 
-Python support is currently limited to Python 2.7 or Python 3.1+. Other versions
-may work, but are not tested.
+Python support is limited to Python 3.5 or later. Other versions may work, but
+are not tested.
 
 ### Linux and BSDs
 
 Install the library dependencies:
 
-- `libreadline`
-- `openssl`
-- `libconfig` (if you want to use configuration files)
-- `liblua`
-- `libpython`
-- `libjansson`
+- `libreadline` _(required)_
+- `openssl` _(required)_
+- `libconfig` _(required if using a configuration file)_
+- `liblua` _(optional)_
+- `libpython` _(optional)_
+- `libjansson` _(optional)_
 
-If you do not want to use one of more of them, pass one or more of these options to
-the configure script: `--disable-libconfig`, `--disable-liblua`, `--disable-python`
-or `--disable-json`.
+If you do not want to build against one or more of the optional dependencies,
+pass one or more of these flags to the configure script: `--disable-libconfig`,
+`--disable-liblua`, `--disable-python` or `--disable-json`.
 
 On Ubuntu/Debian this can be accomplished using:
 
 ```shell
-sudo apt install devscripts libconfig-dev libevent-dev libgcrypt-dev libjansson-dev \
-liblua5.3-dev libpython3-dev libreadline-dev libssl-dev lua5.3 lua-lgi make zlib1g-dev
+sudo apt install devscripts libconfig-dev libevent-dev libgcrypt-dev \
+libjansson-dev liblua5.3-dev libpython3-dev libreadline-dev libssl1.0-dev \
+lua5.3 lua-lgi make zlib1g-dev
 ```
 
 To build and install the packaege, run:
 
 ```shell
-debuild -F -sa
+dpkg-buildpackage -b
 sudo dpkg -i ../telegram-cli_*_amd64.deb
 ```
 
 On Gentoo:
 
 ```shell
-sudo emerge -av sys-libs/readline dev-libs/libconfig dev-libs/openssl dev-lang/lua \
-dev-libs/libevent dev-libs/jansson dev-lang/python
+sudo emerge -av sys-libs/readline dev-libs/libconfig dev-libs/openssl \
+dev-lang/lua dev-libs/libevent dev-libs/jansson dev-lang/python
 ```
 
 On Fedora:
 
 ```shell
-sudo dnf install lua-devel openssl-devel libconfig-devel readline-devel libevent-devel \
-jansson-devel python-devel libgcrypt-devel
+sudo dnf install lua-devel openssl-devel libconfig-devel readline-devel \
+libevent-devel jansson-devel python-devel libgcrypt-devel
 ```
 
 On CentOS:
 
 ```shell
-sudo yum install lua-devel openssl-devel libconfig-devel readline-devel libevent-devel \
-jansson-devel python-devel
+sudo yum install lua-devel openssl-devel libconfig-devel readline-devel \
+libevent-devel jansson-devel python-devel
 ```
 
 On Archlinux:
@@ -94,7 +93,7 @@ On Archlinux:
 ```shell
 yay -S telegram-cli-git
 ```
-     
+
 On Milislinux:
 
 ```shell
@@ -115,8 +114,8 @@ pkg_add libconfig libexecinfo lua python
 On openSUSE:
 
 ```shell
-sudo zypper in lua-devel libconfig-devel readline-devel libevent-devel libjansson-devel \
-python-devel libopenssl-devel
+sudo zypper in lua-devel libconfig-devel readline-devel libevent-devel \
+libjansson-devel python-devel libopenssl-devel
 ```
 
 Then,
@@ -128,33 +127,52 @@ gmake -j$(nproc)
 
 ### Other methods to install on Linux
 
-On Gentoo: Use the ebuild provided
+On Gentoo: Use the ebuild provided.
 
-On Arch: Try the [AUR package](https://aur.archlinux.org/packages/telegram-cli-git)
+On Arch: Try the
+[AUR package](https://aur.archlinux.org/packages/telegram-cli-git)
 
-### Mac OS X
+### MacOS X
 
-The client depends on
-[readline library](http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html) and
-[libconfig](http://www.hyperrealm.com/libconfig/), which are not included in OS
-X by default. You have to install these libraries manually.
+The client depends on the
+[GNU Readline Library](https://tiswww.case.edu/php/chet/readline/rltop.html) and
+[libconfig](https://hyperrealm.github.io/libconfig/), which are not included in
+MacOS X by default. You'll have to install these libraries manually.
 
-If using [Homebrew](https://brew.sh/):
+If using [Homebrew](https://brew.sh/), then:
 
 ```shell
 brew tap ivoputzer/tg
 brew install tg
 ```
 
+> Thanks to
+> [@jfontan](https://github.com/vysheng/tg/issues/3#issuecomment-28293731) for
+> this solution.
+
+But if using [MacPorts](https://www.macports.org), this instead:
+
+```shell
+sudo port install libconfig-hr
+sudo port install readline
+sudo port install lua51
+sudo port install python34
+sudo port install libevent
+export \
+CFLAGS="-I/usr/local/include -I/opt/local/include -I/opt/local/include/lua-5.1"
+export LDFLAGS="-L/usr/local/lib -L/opt/local/lib -L/opt/local/lib/lua-5.1"
+./configure && make -j$(nproc)
+```
+
 ...or the old-fashioned way:
 
 ```shell
 brew install libconfig readline lua python libevent jansson
-export READLINEPATH=$(brew --prefix readline)
-export OPENSSLPATH=$(brew --prefix openssl)
-export CPPFLAGS="-I/usr/local/opt/openssl/include -I$READLINEPATH/include -W"
-export CFLAGS="-I/usr/local/include -I$READLINEPATH/include -I$OPENSSLPATH/include"
-export LDFLAGS="-L/usr/local/lib -L$READLINEPATH/lib -L$OPENSSLPATH/lib"
+export \
+CFLAGS="-I/usr/local/include -I$READLINEPATH/include -I$OPENSSLPATH/include" \
+CPPFLAGS="-I/usr/local/opt/openssl/include -I$READLINEPATH/include -W" \
+LDFLAGS="-L/usr/local/lib -L$READLINEPATH/lib -L$OPENSSLPATH/lib" \
+OPENSSLPATH="$(brew --prefix openssl)" READLINEPATH="$(brew --prefix readline)"
 ./configure && make -j$(nproc)
 ```
 
@@ -173,7 +191,7 @@ In this case, the configure script should be run as:
 ./configure --with-openssl=/usr/local/Cellar/openssl/1.0.2e_1
 ```
 
-and in other cases, OpenSSL could be found in `/usr/local/opt`, so you'd use:
+In other configurations, OpenSSL might reside in `/usr/local/opt`, so you'd use:
 
 ```shell
 ./configure --with-openssl=/usr/local/opt/openssl
@@ -186,27 +204,10 @@ using:
 ./configure --disable-liblua
 ```
 
-After the configure script exit successfully, build with:
+Finally, after the configure script exits successfully, start the build with:
 
 ```shell
 make -j$(nproc)
-```
-
-> Thanks to
-> [@jfontan](https://github.com/vysheng/tg/issues/3#issuecomment-28293731) for
-> this solution.
-
-If using [MacPorts](https://www.macports.org):
-
-```shell
-sudo port install libconfig-hr
-sudo port install readline
-sudo port install lua51
-sudo port install python34
-sudo port install libevent
-export CFLAGS="-I/usr/local/include -I/opt/local/include -I/opt/local/include/lua-5.1"
-export LDFLAGS="-L/usr/local/lib -L/opt/local/lib -L/opt/local/lib/lua-5.1"
-./configure && make -j$(nproc)
 ```
 
 ### Docker
@@ -222,8 +223,9 @@ please let me know. :wink:
 ### Contacts
 
 If you would like to ask a question, you can write to me on Telegram or to the
-GitHub repository (or both). To contact me via Telegram, you should use the import_card
-method with argument 000653bf:0738ca5d:5521fbac:29246815:a27d0cda
+GitHub repository (or both). To contact me via Telegram, you should use the
+`import_card` method with `000653bf:0738ca5d:5521fbac:29246815:a27d0cda` as the
+argument.
 
 ### Usage
 
@@ -231,8 +233,9 @@ method with argument 000653bf:0738ca5d:5521fbac:29246815:a27d0cda
 ./bin/telegram-cli -k <public-server-key>
 ```
 
-By default, the public key is stored in tg-server.pub in the same folder as the binary,
-or in `/etc/telegram-cli/server.pub`. If not, specify where to find it with `-k`:
+By default, the public key is stored in tg-server.pub in the same folder as the
+binary, or in `/etc/telegram-cli/server.pub`. If not, specify where to find it
+with `-k`:
 
 ```shell
 ./bin/telegram-cli -k tg-server.pub
@@ -240,12 +243,12 @@ or in `/etc/telegram-cli/server.pub`. If not, specify where to find it with `-k`
 
 The client supports <kbd>Tab</kbd>-completion and command history.
 
-A "Peer" refers to the name of the contact or dialog and can be accessed by TAB
-completion as well. For user contacts, the peer name is `FirstName_LastName` with all
-whitespace replaced by underscores. For encrypted chats an exclamation point is
-prepended, as in `!FirstName_LastName` and if two or more peers happen to have the
-same name, an octothorpe '#' followed by a sequential Arabic numeral is appended to
-the name, such as `A_B`, `A_B#1`, `A_B#2`, and so on.
+A "Peer" refers to the name of the contact or dialog and can be accessed by Tab-
+completion as well. For user contacts, the peer name is `FirstName_LastName`
+with all whitespace replaced by underscores. For encrypted chats, an exclamation
+point is prepended (as in `!FirstName_LastName`) and if two or more peers happen
+to have the same name, an octothorpe '#' followed by a sequential Arabic numeral
+is appended to the peer name, such as `A_B`, `A_B#1`, `A_B#2`, and so on.
 
 ### Supported commands
 
@@ -271,16 +274,29 @@ the name, such as `A_B`, `A_B#1`, `A_B#2`, and so on.
 - **send_video** \<peer\> \<video-file-name\> - sends video to peer
 - **send_text** \<peer\> \<text-file-name> - sends text file as plain messages
 - **send_document** \<peer\> \<document-file-name\> - sends document to peer
-- **load_photo**/load_video/load_video_thumb/load_audio/load_document/load_document_thumb
-  \<msg-seqno\> - loads photo/video/audio/document to download dir
-- **view_photo**/view_video/view_video_thumb/view_audio/view_document/view_document_thumb
-  \<msg-seqno\> - loads photo/video to download dir and starts system default
-  viewer
+- **load_photo** \<msg-seqno\> - loads photo to download dir
+- **load_video** \<msg-seqno\> - loads video to download dir
+- **load_video_thumb** \<msg-seqno\> - loads video thumbnail to download dir
+- **load_audio** \<msg-seqno\> - loads audio to download dir
+- **load_document** \<msg-seqno\> - loads document to download dir
+- **load_document_thumb** \<msg-seqno\> - loads document thumbnail to d/l dir
+- **view_photo** \<msg-seqno\> - loads photo to download dir and opens it in the
+  default viewer
+- **view_video** \<msg-seqno\> - loads video to download dir and opens it in the
+  default player
+- **view_video_thumb** \<msg-seqno\> - loads video preview to download dir and
+  opens it in the default player
+- **view_audio** \<msg-seqno\> - loads audio to download dir and opens it in the
+  default player
+- **view_document** \<msg-seqno\> - loads document to download dir and opens it
+  in the default viewer
+- **view_document_thumb** \<msg-seqno\> - loads document preview to download dir
+  and opens it in the default viewer
 - **fwd_media** \<msg-seqno\> send media in your message. Use this to prevent
   sharing info about author of media (though, it is possible to determine
   user_id from media itself, it is not possible get access_hash of this user)
-- **set_profile_photo** \<photo-file-name\> - sets userpic. Photo should be
-  square, or server will cut biggest central square part
+- **set_profile_photo** \<photo-file-name\> - sets user avatar; photo should be
+  square, or server will cut out the biggest central square part automatically
 
 #### Group chat options
 

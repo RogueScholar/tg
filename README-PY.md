@@ -1,17 +1,36 @@
-Python Bindings
-====================
-All of the functions and methods are executed in the network loop of tg, ***NOT IMMEDIATELY***. What this means is all calls should be considered async, and so there is an optional callback parameter for every function/method as the last parameter. For many uses, you won't care about the return value, so you can leave out the callback. Note there are a few cases where the callback is considered mandatory when the function is considered an information query and has no functionality without returned data. These will explicitly have the callback in the parameter list and will be noted in the description.
+# Python bindings for telegram-cli
 
-You can specify the python script from config ("python_script" option) or from command_line [-Z].
+All of the functions and methods are executed in the network loop of the
+telegram-cli client, **NOT IMMEDIATELY**. What this means is that all calls
+should be considered asynchronous, and so there is an optional callback
+parameter for every function/method as the final argument. For many uses, you
+won't care about the return value, so you can leave out the callback.
 
-Version Notes
-=====================
-The python integration is written with Python 2/3 in mind, however, there is a bias to Python 3. Because of this, there are a few caveats:
-- I am only testing against Python 2.7, and have no intention to support/test < 2.7 but am more than happy to accept PRs for fixes as long as it does not break 2.7/3
-- repr/print of native types is dumbed down for < 2.7.9, I highly recommend using this version or newer. (This is due to a [bug](http://bugs.python.org/issue22023) in python)
+> **NOTE:** There are a few cases where the callback is considered mandatory,
+> namely when the function is considered an information query and has no
+> functionality without returned data. These will explicitly have the callback
+> in the parameter list and it will be noted in the description.
 
-TGL Callbacks
-=============
+You can specify the python script in the configuration file by providing its
+path as the value to the `python_script` key or from the command line on
+invocation using the `-Z [script file]` flag.
+
+## Version notes
+
+The Python integration is written with Python 2/3 in mind, however there is an
+intention bias in favor of Python 3. Because of this, there are a few general
+caveats:
+
+- I am only testing against Python 2.7 and have no intention to support/test <
+  2.7, but am more than happy to accept PRs for fixes that target it, as long as
+  they do not break 2/3 interoperability.
+
+- repr/print of native types is dumbed down for < 2.7.9. I highly recommend
+  using this version or newer. This is due to a
+  [known bug](http://bugs.python.org/issue22023) in earlier Python versions.
+
+## TGL callbacks
+
 Assign python fuctions to the following tgl attributes to set callbacks from TG.
 
 | Callback | Description          |

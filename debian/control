@@ -1,38 +1,30 @@
 Source: telegram-cli
 Section: net
 Priority: optional
-Maintainer: Cleto Martín <cleto@debian.org>
-Build-Depends: autoconf-archive,
-               autotools-dev,
-               debhelper (>= 8.0.0),
-               libconfig-dev,
-               libreadline-dev,
-               libssl-dev,
-               libevent-dev,
-               libjansson-dev,
-               libpython-dev,
-               liblua5.2-dev,
-               libgcrypt-dev,
-               lua-lgi,
-               lua5.2
-Standards-Version: 3.9.5
-Homepage: https://github.com/vysheng/tg
-Vcs-Git: git://github.com/vysheng/tg.git
-Vcs-Browser: https://github.com/vysheng/tg
+Maintainer: Peter J. Mello <admin@petermello.net>
+Build-Depends: debhelper-compat (= 12), autoconf-archive, autotools-dev,
+ lsb-release, libconfig-dev, libreadline-dev, libssl-dev | libssl1.0-dev,
+ libevent-dev, libjansson-dev, libpython3-all-dev, liblua5.3-dev,
+ libgcrypt20-dev | libgcrypt-dev, lua-lgi, lua5.3
+Standards-Version: 4.5.1
+Homepage: https://github.com/RogueScholar/telegram-cli
+Vcs-Git: https://github.com/RogueScholar/telegram-cli.git
+Vcs-Browser: https://github.com/RogueScholar/telegram-cli
+Rules-Requires-Root: no
 
 Package: telegram-cli
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: Command-line interface for Telegram messenger
- Telegram messenger is a cloud-based instant messaging designed for
- smart phones and similar to Whatsapp but more flexible, and
- powerful. You can send messages, photos, videos and documents to
- people who are in your phone contacts (and have Telegram). Telegram
- also supports secret chats whose provide a private (encrypted) way of
- communication.
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Command-line interface for Telegram Messenger
+ Telegram is a cloud-based instant messaging platform designed for smartphones,
+ similar to WhatsApp but more flexible and powerful. You can send messages,
+ photos, videos and documents to other people who are in your contacts (and have
+ Telegram) individually or in groups of up to 100,000! Telegram also supports
+ secret chats with verified end-to-end (E2E) encryption for moments when privacy
+ is required.
  .
- This package contains a command-line based client for Telegram with
- the following features:
+ This package contains a command-line based client for Telegram with the
+ following features:
   * Colored terminal messages.
   * Message management: history, stats, etc.
   * Group chat: create and manage groups.
